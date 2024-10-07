@@ -1,0 +1,68 @@
+openapi: 3.0.0
+info:
+  title: API de Pedidos
+  description: API para gestionar pedidos y detalles de pedidos en el sistema.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8001
+    description: Servidor de desarrollo
+
+paths:
+  /pedidos:
+    post:
+      summary: Crear un nuevo pedido
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cliente:
+                  type: string
+                  description: Nombre del cliente que realiza el pedido
+                detalles:
+                  type: array
+                  description: Detalles del pedido
+                  items:
+                    type: object
+                    properties:
+                      producto_id:
+                        type: integer
+                        description: ID del producto
+                      cantidad:
+                        type: integer
+                        description: Cantidad del producto
+                      precio_unitario:
+                        type: number
+                        format: float
+                        description: Precio unitario del producto
+      responses:
+        '201':
+          description: Pedido creado exitosamente
+          content:
+            application/json:
+              schema:
+                type: string
+                example: Pedido creado con ID: 1
+        '400':
+          description: Error en la solicitud
+        '500':
+          description: Error interno del servidor
+
+  /:
+    get:
+      summary: Echo Test
+      description: Endpoint para verificar el estado de la API (Health Check)
+      responses:
+        '200':
+          description: Respuesta de éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Echo Test OK

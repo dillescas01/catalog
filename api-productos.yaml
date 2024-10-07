@@ -1,0 +1,160 @@
+openapi: 3.0.0
+info:
+  title: API de Productos
+  description: Microservicio para la gestión de productos y categorías
+  version: 1.0.0
+servers:
+  - url: http://98.82.74.138:8000
+    description: Servidor principal de la API de Productos
+
+paths:
+  /:
+    get:
+      summary: Echo Test
+      description: Health check para validar que el servicio esté activo.
+      responses:
+        '200':
+          description: Retorna un mensaje de éxito
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Echo Test OK
+
+  /productos:
+    get:
+      summary: Listar productos
+      description: Retorna una lista de todos los productos disponibles.
+      responses:
+        '200':
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  productos:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id_producto:
+                          type: integer
+                          example: 1
+                        nombre:
+                          type: string
+                          example: Laptop
+                        descripcion:
+                          type: string
+                          example: Laptop HP i7
+                        precio:
+                          type: number
+                          format: float
+                          example: 1200.00
+                        inventario:
+                          type: integer
+                          example: 10
+                        id_categoria:
+                          type: integer
+                          example: 1
+    post:
+      summary: Crear un producto
+      description: Crea un nuevo producto en la base de datos.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Producto'
+      responses:
+        '201':
+          description: Producto creado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Producto creado exitosamente
+
+  /productos/{id_producto}:
+    put:
+      summary: Actualizar un producto
+      description: Modifica la información de un producto existente.
+      parameters:
+        - name: id_producto
+          in: path
+          required: true
+          description: ID del producto a modificar
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Producto'
+      responses:
+        '200':
+          description: Producto modificado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Producto modificado exitosamente
+    delete:
+      summary: Eliminar un producto
+      description: Elimina un producto basado en su ID.
+      parameters:
+        - name: id_producto
+          in: path
+          required: true
+          description: ID del producto a eliminar
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Producto eliminado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Producto eliminado exitosamente
+
+components:
+  schemas:
+    Producto:
+      type: object
+      required:
+        - nombre
+        - descripcion
+        - precio
+        - inventario
+        - id_categoria
+      properties:
+        nombre:
+          type: string
+          example: Laptop
+        descripcion:
+          type: string
+          example: Laptop HP i7
+        precio:
+          type: number
+          format: float
+          example: 1200.00
+        inventario:
+          type: integer
+          example: 10
+        id_categoria:
+          type: integer
+          example: 1

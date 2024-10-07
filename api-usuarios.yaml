@@ -1,0 +1,163 @@
+openapi: 3.0.0
+info:
+  title: API de Usuarios
+  description: API para el registro, autenticación y gestión de perfiles de usuarios.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+    description: Servidor local para la API de Usuarios
+
+paths:
+  /:
+    get:
+      summary: Echo test para verificar si el servidor está activo
+      responses:
+        '200':
+          description: Retorna un mensaje de confirmación
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Echo Test OK"
+
+  /users/register:
+    post:
+      summary: Registra un nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nombre:
+                  type: string
+                  description: Nombre del usuario
+                  example: "Juan Perez"
+                email:
+                  type: string
+                  description: Correo electrónico del usuario
+                  example: "juan.perez@example.com"
+                password:
+                  type: string
+                  description: Contraseña del usuario
+                  example: "mi_contraseña_segura"
+                direccion:
+                  type: string
+                  description: Dirección del usuario
+                  example: "Calle Falsa 123"
+      responses:
+        '201':
+          description: Usuario registrado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Usuario registrado"
+        '400':
+          description: Error al registrar el usuario
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error al registrar el usuario"
+
+  /users/login:
+    post:
+      summary: Autentica a un usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: Correo electrónico del usuario
+                  example: "juan.perez@example.com"
+                password:
+                  type: string
+                  description: Contraseña del usuario
+                  example: "mi_contraseña_segura"
+      responses:
+        '200':
+          description: Usuario autenticado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: Token JWT del usuario autenticado
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '400':
+          description: Error en la autenticación
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Usuario no encontrado" 
+
+  /users/profile:
+    put:
+      summary: Actualiza el perfil de un usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+                  description: ID del usuario
+                  example: "6149b85e3f1c2b6f0f1c1f7b"
+                nombre:
+                  type: string
+                  description: Nuevo nombre del usuario
+                  example: "Juan Perez Actualizado"
+                direccion:
+                  type: string
+                  description: Nueva dirección del usuario
+                  example: "Calle Actualizada 456"
+      responses:
+        '200':
+          description: Perfil actualizado exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userId:
+                    type: string
+                    example: "6149b85e3f1c2b6f0f1c1f7b"
+                  nombre:
+                    type: string
+                    example: "Juan Perez Actualizado"
+                  direccion:
+                    type: string
+                    example: "Calle Actualizada 456"
+        '400':
+          description: Error al actualizar el perfil
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Error al actualizar el perfil"
